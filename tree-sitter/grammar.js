@@ -10,28 +10,56 @@
 module.exports = grammar({
   name: "sunset",
 
-  rules: {
-    source_file: ($) => choice($.float, $.integer),
+  extras: ($) => [$.comment, /[\s]+/],
 
-    // Latex word
-    // Alphanumeric
-    // Comment
+  word: ($) => $.identifier,
+
+  rules: {
+    source_file: ($) => repeat(choice($.number, $.identifier, $.if)),
+
+    // Units and values
+    quantity: ($) => seq($.number, optional($.unit)),
+    unit: ($) => seq("{", $.unit_factor, "}"),
+    unit_factor: ($) =>
+      seq($.unit_power, repeat(seq(choice("*", "/"), $.unit_power))),
+    unit_power: ($) =>
+      seq($.unit_primary, optional(seq("^", choice($.integer)))),
+    unit_primary: ($) => choice(seq("(", $.unitFactor, ")"), $.unit_keyword),
+
+    // Keywords
+    if: ($) => "if",
+    else: ($) => "else",
+    end: ($) => "end",
+    // TODO: Include more units
+    unit_keyword: ($) => choice("mm", "m", "km"),
+
+    // Lexical grammar
+    // Latex
+    latexWord: ($) => /[a-zA-Z0-9*']+/,
+    subscript: ($) => seq("_", $.singleSymbol),
+    superscript: ($) => seq("^", $.singleSymbol),
+    singleSymbol: ($) =>
+      choice(
+        seq("{", $.singleSymbol, "}"),
+        seq($.latexWord, repeat(choice($.subscript, $.superscript))),
+      ),
+
+    identifier: ($) => token(/[a-zA-Z_][a-zA-Z0-9]*/),
+    string: ($) => seq('"', /[^\r\n\u2028\u2029]*/, '"'),
 
     number: ($) => seq(choice($.float, $.integer), optional($.exponent)),
-
+    // TODO: This doesn't work and gets picked up as an identifier instead
     exponent: ($) =>
       seq(
         choice("e", "E"),
         optional(choice("+", "-")),
         choice($.float, $.integer),
       ),
-
     float: ($) => seq($.integer, ".", $.integer),
-
     integer: ($) => /[0-9]+/,
-
     boolean: ($) => choice("true", "false"),
 
-    newline: ($) => choice("\r\n", "\n"),
+    // Comments
+    comment: ($) => token(/\/\/.*/),
   },
 });
