@@ -20,4 +20,14 @@ To test this on a file named `example.sunset`, use the following CLI command:
 tree-sitter parse example.sunset
 ```
 
-The grammar is contained in the `grammar.js` file - edit it and re-run `tree-sitter generate` to test the updated grammar.
+The grammar is contained in the `grammar.js` file - edit it and re-run `tree-sitter generate` to test the updated grammar. Refer to the [Tree-sitter documentation](https://tree-sitter.github.io/tree-sitter/creating-parsers/3-writing-the-grammar.html) for further information on the Tree-sitter DSL.
+
+### Testing
+
+Automated testing has been set up in the ./tree-sitter/tests/corpus/ folder. These may be run using the following command:
+
+```bash
+tree-sitter test
+```
+
+For more information on writing tests, see the [Tree-sitter documentation](https://tree-sitter.github.io/tree-sitter/creating-parsers/5-writing-tests.html).
