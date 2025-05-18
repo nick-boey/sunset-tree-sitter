@@ -11,7 +11,27 @@ module.exports = grammar({
   name: "sunset",
 
   rules: {
-    // TODO: add the actual grammar rules
-    source_file: $ => "hello"
-  }
+    source_file: ($) => choice($.float, $.integer),
+
+    // Latex word
+    // Alphanumeric
+    // Comment
+
+    number: ($) => seq(choice($.float, $.integer), optional($.exponent)),
+
+    exponent: ($) =>
+      seq(
+        choice("e", "E"),
+        optional(choice("+", "-")),
+        choice($.float, $.integer),
+      ),
+
+    float: ($) => seq($.integer, ".", $.integer),
+
+    integer: ($) => /[0-9]+/,
+
+    boolean: ($) => choice("true", "false"),
+
+    newline: ($) => choice("\r\n", "\n"),
+  },
 });
