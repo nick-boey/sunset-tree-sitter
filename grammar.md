@@ -111,7 +111,7 @@ factor                  -> power ( ( "/" | "*" ) power )* ;
 power                   -> unary ( "^" unary )*
 unary                   -> "-" unary | primary ;
 primary                 -> value | call
-                            | IDENTIFIER | ELEMENTPROPERTY 
+                            | IDENTIFIER | ELEMENTPROPERTY
                             | "(" expression ")";
 call                    -> identifier "(" positionalArguments ")" ;
 ```
@@ -177,7 +177,7 @@ ALPHA                   -> "a" ... "z" | "A" ... "Z" ;
 COMMENT                 -> "//" <any char except NEWLINE>* NEWLINE ;
 REPORT                  -> "///" <any char except NEWLINE>* NEWLINE ;
 
-NUMBER                  -> (FLOAT | INTEGER) EXPONENT? ; 
+NUMBER                  -> (FLOAT | INTEGER) EXPONENT? ;
 EXPONENT                -> ("e" | "E") ("+" | "-" )? (FLOAT | INTEGER)
 FLOAT                   -> DIGIT+ "." DIGIT+ ;
 INTEGER                 -> DIGIT+ ;
