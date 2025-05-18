@@ -20,3 +20,4 @@ To test this on a file named `example.sunset`, use the following CLI command:
 tree-sitter parse example.sunset
 ```
 
+The grammar is contained in the `grammar.js` file - edit it and re-run `tree-sitter generate` to test the updated grammar.
