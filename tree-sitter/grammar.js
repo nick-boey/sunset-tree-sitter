@@ -24,7 +24,7 @@ module.exports = grammar({
       seq($.unit_power, repeat(seq(choice("*", "/"), $.unit_power))),
     unit_power: ($) =>
       seq($.unit_primary, optional(seq("^", choice($.integer)))),
-    unit_primary: ($) => choice(seq("(", $.unitFactor, ")"), $.unit_keyword),
+    unit_primary: ($) => choice(seq("(", $.unit_factor, ")"), $.unit_keyword),
 
     // Keywords
     if: ($) => "if",
