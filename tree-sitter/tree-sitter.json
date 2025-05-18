@@ -1,0 +1,40 @@
+{
+  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/config.schema.json",
+  "grammars": [
+    {
+      "name": "sunset",
+      "camelcase": "Sunset",
+      "title": "Sunset Language",
+      "scope": "source.sunset",
+      "file-types": [
+        "sunset"
+      ],
+      "injection-regex": "^sunset$",
+      "class-name": "TreeSitterSunset"
+    }
+  ],
+  "metadata": {
+    "version": "0.0.1",
+    "license": "MIT",
+    "description": "The Sunset Language is a programming language designed for engineering calculations.",
+    "authors": [
+      {
+        "name": "Nicholas Boey",
+        "email": "nboey@northrop.com.au",
+        "url": "https://github.com/nick-boey"
+      }
+    ],
+    "links": {
+      "repository": "https://github.com/nick-boey/sunset-docs"
+    }
+  },
+  "bindings": {
+    "c": true,
+    "go": true,
+    "node": true,
+    "python": true,
+    "rust": true,
+    "swift": true,
+    "zig": false
+  }
+}

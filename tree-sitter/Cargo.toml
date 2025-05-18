@@ -1,0 +1,34 @@
+[package]
+name = "tree-sitter-sunset"
+description = "The Sunset Language is a programming language designed for engineering calculations."
+version = "0.0.1"
+authors = ["Nicholas Boey <nboey@northrop.com.au>"]
+license = "MIT"
+readme = "README.md"
+keywords = ["incremental", "parsing", "tree-sitter", "sunset"]
+categories = ["parser-implementations", "parsing", "text-editors"]
+repository = "https://github.com/nick-boey/sunset-docs"
+edition = "2021"
+autoexamples = false
+
+build = "bindings/rust/build.rs"
+include = [
+  "bindings/rust/*",
+  "grammar.js",
+  "queries/*",
+  "src/*",
+  "tree-sitter.json",
+  "LICENSE",
+]
+
+[lib]
+path = "bindings/rust/lib.rs"
+
+[dependencies]
+tree-sitter-language = "0.1"
+
+[build-dependencies]
+cc = "1.2"
+
+[dev-dependencies]
+tree-sitter = "0.25.3"

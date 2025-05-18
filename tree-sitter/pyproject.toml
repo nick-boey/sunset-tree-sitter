@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tree-sitter-sunset"
+description = "The Sunset Language is a programming language designed for engineering calculations."
+version = "0.0.1"
+keywords = ["incremental", "parsing", "tree-sitter", "sunset"]
+classifiers = [
+  "Intended Audience :: Developers",
+  "Topic :: Software Development :: Compilers",
+  "Topic :: Text Processing :: Linguistic",
+  "Typing :: Typed",
+]
+authors = [{ name = "Nicholas Boey", email = "nboey@northrop.com.au" }]
+requires-python = ">=3.10"
+license.text = "MIT"
+readme = "README.md"
+
+[project.urls]
+Homepage = "https://github.com/nick-boey/sunset-docs"
+
+[project.optional-dependencies]
+core = ["tree-sitter~=0.24"]
+
+[tool.cibuildwheel]
+build = "cp310-*"
+build-frontend = "build"
