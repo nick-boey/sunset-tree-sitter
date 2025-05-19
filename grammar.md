@@ -136,7 +136,7 @@ Notes:
 ## Units and values
 
 ```ebnf
-value                   -> NUMBER unit? ;
+quantity                -> NUMBER unit? ;
 
 unit                    -> "{" unitFactor "}" ;
 unitFactor              -> unitPower ( ( "/" | "*" ) unitPower )* ;

@@ -17,6 +17,16 @@ module.exports = grammar({
   rules: {
     source_file: ($) => repeat(choice($.number, $.identifier, $.if)),
 
+    // Expressions
+    call: $ => seq($.identifier, "(", $.positional_arguments, ")"),
+
+    // Properties
+    named_arguments: $ => seq($.named_argument, repeat(seq(",", $.named_argument))),
+    positional_arguments: $ => seq($.argument, repeat(seq(",", $.argument))),
+    named_argument: $ => seq($.identifier, ":", $.argument),
+    argument: $ => choice($.value, $.identifier),
+    new_element: $ => seq($.identifier, optional(seq("(", choice($.positional_arguments, $.named_arguments), ")"))),
+
     // Units and values
     quantity: ($) => seq($.number, optional($.unit)),
     unit: ($) => seq("{", $.unit_factor, "}"),
