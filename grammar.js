@@ -25,7 +25,7 @@ module.exports = grammar({
     named_arguments: $ => seq($.named_argument, repeat(seq(",", $.named_argument))),
     positional_arguments: $ => seq($.argument, repeat(seq(",", $.argument))),
     named_argument: $ => seq($.identifier, ":", $.argument),
-    argument: $ => choice($.value, $.identifier),
+    argument: $ => choice($.quantity, $.identifier),
     new_element: $ => seq($.identifier, optional(seq("(", choice($.positional_arguments, $.named_arguments), ")"))),
 
     // Units and values
@@ -58,7 +58,8 @@ module.exports = grammar({
     identifier: ($) => token(/[a-zA-Z_][a-zA-Z0-9]*/),
     string: ($) => seq('"', /[^\r\n\u2028\u2029]*/, '"'),
 
-    number: ($) => token(seq(choice($.float, $.integer), optional($.exponent))),
+    // Replace with regex
+    number: ($) => seq(choice($.float, $.integer), optional($.exponent)),
     // TODO: This doesn't work and gets picked up as an identifier instead
     exponent: ($) =>
       seq(
@@ -66,7 +67,8 @@ module.exports = grammar({
         optional(choice("+", "-")),
         choice($.float, $.integer),
       ),
-    float: ($) => token(seq($.integer, ".", $.integer)),
+    // TODO: Replace with regex
+    float: ($) => seq($.integer, ".", $.integer),
     integer: ($) => /[0-9]+/,
     boolean: ($) => choice("true", "false"),
 
