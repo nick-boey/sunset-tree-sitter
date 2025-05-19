@@ -10,6 +10,7 @@
 module.exports = grammar({
   name: "sunset",
 
+  // Comments and whitespace as extras
   extras: ($) => [$.comment, /[\s]+/],
 
   word: ($) => $.identifier,
@@ -57,7 +58,7 @@ module.exports = grammar({
     identifier: ($) => token(/[a-zA-Z_][a-zA-Z0-9]*/),
     string: ($) => seq('"', /[^\r\n\u2028\u2029]*/, '"'),
 
-    number: ($) => seq(choice($.float, $.integer), optional($.exponent)),
+    number: ($) => token(seq(choice($.float, $.integer), optional($.exponent))),
     // TODO: This doesn't work and gets picked up as an identifier instead
     exponent: ($) =>
       seq(
@@ -65,7 +66,7 @@ module.exports = grammar({
         optional(choice("+", "-")),
         choice($.float, $.integer),
       ),
-    float: ($) => seq($.integer, ".", $.integer),
+    float: ($) => token(seq($.integer, ".", $.integer)),
     integer: ($) => /[0-9]+/,
     boolean: ($) => choice("true", "false"),
 
