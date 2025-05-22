@@ -108,10 +108,6 @@ module.exports = grammar({
     // elementProperty: $ => seq($.identifier, repeat(seq(".", $.identifier))),
 
     // Units and values
-    add: ($) => "+",
-    subtract: ($) => "-",
-    multiply: ($) => "*",
-    divide: ($) => "/",
     quantity: ($) => seq($.number, optional($.unit)),
     unit: ($) => seq("{", $.unitFactor, "}"),
     unitFactor: ($) =>
@@ -146,6 +142,12 @@ module.exports = grammar({
     end: ($) => "end",
     // TODO: Include more units
     unitKeyword: ($) => choice("mm", "m", "km"),
+
+    // Operators
+    add: ($) => "+",
+    subtract: ($) => "-",
+    multiply: ($) => "*",
+    divide: ($) => "/",
 
     // Lexical grammar
     // Latex
