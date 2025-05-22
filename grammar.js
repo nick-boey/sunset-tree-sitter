@@ -16,33 +16,64 @@ module.exports = grammar({
   word: ($) => $.identifier,
 
   rules: {
-    source_file: ($) => repeat(choice($.number, $.identifier, $.if)),
+    source_file: ($) => repeat(choice($.number, $.identifier)),
+
+    // Statements
+    variableAssignment = $ => seq($.variableProperties, choice($.value, $.))
+    // inputAssignment
+    // variableProperties
+    // metadataAssignment
+    // identifierSymbol
+    // identifierSubscript
+    // descriptionShorthand
 
     // Expressions
-    call: $ => seq($.identifier, "(", $.positional_arguments, ")"),
+    // ifExpression
+    // ifCondExpression
+    // ifCompExpression
+    // listExpression
+    // dictionaryExpression
+    // keyValuePair: $ => seq(choice($.identifier))
+    // logicOr
+    // logicAnd
+    // equality: $ => seq($.term, optional(seq(choice("==", "!="), $.term))),
+    comparison: $ => seq($.term, optional(seq(choice(">", ">=", "<", "<="), $.term))),
+    term: $ => seq($.factor, repeat(seq(choice("-", "+"), $.factor))),
+    factor: $ => seq($.power, repeat(seq(choice("/", "*"), $.power))),
+    power: $ => seq($.unary, repeat(seq("^", $.unary))),
+    unary: $ => seq("-", choice($.unary, $.primary)),
+    primary: $ => choice(
+      $.quantity,
+      // $.call,
+      $.identifier,
+      // $.elementProperty,
+      seq("(", $.expression, ")")
+    ),
+    // call: $ => seq($.identifier, "(", $.positionalArguments, ")"),
 
     // Properties
-    named_arguments: $ => seq($.named_argument, repeat(seq(",", $.named_argument))),
-    positional_arguments: $ => seq($.argument, repeat(seq(",", $.argument))),
-    named_argument: $ => seq($.identifier, ":", $.argument),
-    argument: $ => choice($.quantity, $.identifier),
-    new_element: $ => seq($.identifier, optional(seq("(", choice($.positional_arguments, $.named_arguments), ")"))),
+    // namedArguments: $ => seq($.named_argument, repeat(seq(",", $.namedArgument))),
+    // positionalArguments: $ => seq($.argument, repeat(seq(",", $.argument))),
+    // namedArgument: $ => seq($.identifier, ":", $.argument),
+    // argument: $ => choice($.quantity, $.identifier),
+    // newElement: $ => seq($.identifier, optional(seq("(", choice($.positionalArguments, $.namedArguments), ")"))),
+    // elementProperty: $ => seq($.identifier, repeat(seq(".", $.identifier))),
 
     // Units and values
     quantity: ($) => seq($.number, optional($.unit)),
-    unit: ($) => seq("{", $.unit_factor, "}"),
-    unit_factor: ($) =>
-      seq($.unit_power, repeat(seq(choice("*", "/"), $.unit_power))),
-    unit_power: ($) =>
+    unit: ($) => seq("{", $.unitFactor, "}"),
+    unitFactor: ($) =>
+      seq($.unit_power, repeat(seq(choice("*", "/"), $.unitPower))),
+    unitPower: ($) =>
       seq($.unit_primary, optional(seq("^", choice($.integer)))),
-    unit_primary: ($) => choice(seq("(", $.unit_factor, ")"), $.unit_keyword),
+    unitPrimary: ($) => choice(seq("(", $.unitFactor, ")"), $.unitKeyword),
 
     // Keywords
     if: ($) => "if",
     else: ($) => "else",
     end: ($) => "end",
     // TODO: Include more units
-    unit_keyword: ($) => choice("mm", "m", "km"),
+    unitKeyword: ($) => choice("mm", "m", "km"),
 
     // Lexical grammar
     // Latex
