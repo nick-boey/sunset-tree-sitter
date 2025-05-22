@@ -10,108 +10,232 @@
         "members": [
           {
             "type": "SYMBOL",
-            "name": "number"
+            "name": "expression"
           },
           {
             "type": "SYMBOL",
-            "name": "identifier"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "if"
+            "name": "variableAssignment"
           }
         ]
       }
     },
-    "call": {
+    "variableAssignment": {
       "type": "SEQ",
       "members": [
         {
           "type": "SYMBOL",
-          "name": "identifier"
+          "name": "variableProperties"
         },
         {
           "type": "STRING",
-          "value": "("
+          "value": "="
         },
         {
-          "type": "SYMBOL",
-          "name": "positional_arguments"
-        },
-        {
-          "type": "STRING",
-          "value": ")"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "expression"
+            }
+          ]
         }
       ]
     },
-    "named_arguments": {
+    "variableProperties": {
       "type": "SEQ",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "named_argument"
+          "type": "FIELD",
+          "name": "variableName",
+          "content": {
+            "type": "SYMBOL",
+            "name": "identifier"
+          }
         },
         {
-          "type": "REPEAT",
+          "type": "FIELD",
+          "name": "unit",
           "content": {
-            "type": "SEQ",
+            "type": "CHOICE",
             "members": [
               {
-                "type": "STRING",
-                "value": ","
+                "type": "SYMBOL",
+                "name": "unit"
               },
               {
-                "type": "SYMBOL",
-                "name": "named_argument"
+                "type": "BLANK"
               }
             ]
           }
         }
       ]
     },
-    "positional_arguments": {
-      "type": "SEQ",
+    "expression": {
+      "type": "SYMBOL",
+      "name": "term"
+    },
+    "term": {
+      "type": "CHOICE",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "argument"
-        },
-        {
-          "type": "REPEAT",
+          "type": "PREC_LEFT",
+          "value": 3,
           "content": {
             "type": "SEQ",
             "members": [
               {
-                "type": "STRING",
-                "value": ","
+                "type": "FIELD",
+                "name": "left",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "factor"
+                }
               },
               {
-                "type": "SYMBOL",
-                "name": "argument"
+                "type": "FIELD",
+                "name": "operator",
+                "content": {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "add"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "subtract"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "FIELD",
+                "name": "right",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "factor"
+                }
               }
             ]
           }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "factor"
         }
       ]
     },
-    "named_argument": {
+    "factor": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "PREC_LEFT",
+          "value": 2,
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "FIELD",
+                "name": "left",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "power"
+                }
+              },
+              {
+                "type": "FIELD",
+                "name": "operator",
+                "content": {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "multiply"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "divide"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "FIELD",
+                "name": "right",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "power"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "power"
+        }
+      ]
+    },
+    "power": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "PREC_LEFT",
+          "value": 1,
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "FIELD",
+                "name": "operand",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_unary"
+                }
+              },
+              {
+                "type": "STRING",
+                "value": "^"
+              },
+              {
+                "type": "FIELD",
+                "name": "exponent",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_unary"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_unary"
+        }
+      ]
+    },
+    "_unary": {
       "type": "SEQ",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "identifier"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "-"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         },
         {
-          "type": "STRING",
-          "value": ":"
-        },
-        {
           "type": "SYMBOL",
-          "name": "argument"
+          "name": "_primary"
         }
       ]
     },
-    "argument": {
+    "_primary": {
       "type": "CHOICE",
       "members": [
         {
@@ -121,51 +245,41 @@
         {
           "type": "SYMBOL",
           "name": "identifier"
-        }
-      ]
-    },
-    "new_element": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "identifier"
         },
         {
-          "type": "CHOICE",
+          "type": "SEQ",
           "members": [
             {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "STRING",
-                  "value": "("
-                },
-                {
-                  "type": "CHOICE",
-                  "members": [
-                    {
-                      "type": "SYMBOL",
-                      "name": "positional_arguments"
-                    },
-                    {
-                      "type": "SYMBOL",
-                      "name": "named_arguments"
-                    }
-                  ]
-                },
-                {
-                  "type": "STRING",
-                  "value": ")"
-                }
-              ]
+              "type": "STRING",
+              "value": "("
             },
             {
-              "type": "BLANK"
+              "type": "SYMBOL",
+              "name": "expression"
+            },
+            {
+              "type": "STRING",
+              "value": ")"
             }
           ]
         }
       ]
+    },
+    "add": {
+      "type": "STRING",
+      "value": "+"
+    },
+    "subtract": {
+      "type": "STRING",
+      "value": "-"
+    },
+    "multiply": {
+      "type": "STRING",
+      "value": "*"
+    },
+    "divide": {
+      "type": "STRING",
+      "value": "/"
     },
     "quantity": {
       "type": "SEQ",
@@ -197,7 +311,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "unit_factor"
+          "name": "unitFactor"
         },
         {
           "type": "STRING",
@@ -205,76 +319,99 @@
         }
       ]
     },
-    "unit_factor": {
-      "type": "SEQ",
+    "unitFactor": {
+      "type": "CHOICE",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "unit_power"
-        },
-        {
-          "type": "REPEAT",
+          "type": "PREC_LEFT",
+          "value": 2,
           "content": {
             "type": "SEQ",
             "members": [
               {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "STRING",
-                    "value": "*"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "/"
-                  }
-                ]
+                "type": "FIELD",
+                "name": "left",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "unitPower"
+                }
               },
               {
-                "type": "SYMBOL",
-                "name": "unit_power"
+                "type": "FIELD",
+                "name": "operator",
+                "content": {
+                  "type": "TOKEN",
+                  "content": {
+                    "type": "CHOICE",
+                    "members": [
+                      {
+                        "type": "STRING",
+                        "value": "*"
+                      },
+                      {
+                        "type": "STRING",
+                        "value": "/"
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "FIELD",
+                "name": "right",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "unitPower"
+                }
               }
             ]
           }
-        }
-      ]
-    },
-    "unit_power": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "unit_primary"
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "STRING",
-                  "value": "^"
-                },
-                {
-                  "type": "CHOICE",
-                  "members": [
-                    {
-                      "type": "SYMBOL",
-                      "name": "integer"
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
+          "type": "SYMBOL",
+          "name": "unitPower"
         }
       ]
     },
-    "unit_primary": {
+    "unitPower": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "PREC_LEFT",
+          "value": 1,
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "FIELD",
+                "name": "operand",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "unitPrimary"
+                }
+              },
+              {
+                "type": "STRING",
+                "value": "^"
+              },
+              {
+                "type": "FIELD",
+                "name": "exponent",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "number"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "unitPrimary"
+        }
+      ]
+    },
+    "unitPrimary": {
       "type": "CHOICE",
       "members": [
         {
@@ -286,7 +423,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "unit_factor"
+              "name": "unitFactor"
             },
             {
               "type": "STRING",
@@ -296,7 +433,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "unit_keyword"
+          "name": "unitKeyword"
         }
       ]
     },
@@ -312,7 +449,7 @@
       "type": "STRING",
       "value": "end"
     },
-    "unit_keyword": {
+    "unitKeyword": {
       "type": "CHOICE",
       "members": [
         {
@@ -338,7 +475,7 @@
       "members": [
         {
           "type": "STRING",
-          "value": "_"
+          "value": "j"
         },
         {
           "type": "SYMBOL",

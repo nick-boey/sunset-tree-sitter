@@ -109,7 +109,7 @@ comparison              -> term ( ( ">" | ">=" | "<" | "<=" ) term )? ;
 term                    -> factor ( ( "-" | "+" ) factor )* ;
 factor                  -> power ( ( "/" | "*" ) power )* ;
 power                   -> unary ( "^" unary )*
-unary                   -> "-" unary | primary ;
+unary                   -> ("-")? primary ;
 primary                 -> quantity | call
                             | IDENTIFIER | ELEMENTPROPERTY
                             | "(" expression ")";
