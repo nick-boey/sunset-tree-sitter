@@ -99,18 +99,18 @@ ifCompExpression        -> if IDENTIFIER ":" NEWLINE
 
 listExpression          -> "[" (expression ( "," expression )* )? "]" ;
 dictionaryExpression    -> "[" keyValuePair ( "," keyValuePair )* "]" ;
-keyValuePair            -> ( value | identifier ) ":" expression ;
+keyValuePair            -> identifier ":" expression ;
 
 expression              -> logic_or ;
 logic_or                -> logic_and ( "or" logic_and )* ;
 logic_and               -> equality ( "and" equality )* ;
-equality                -> comparison ( ( "!=" | "==" ) comparison )* ;
-comparison              -> term ( ( ">" | ">=" | "<" | "<=" ) term )* ;
+equality                -> comparison ( ( "!=" | "==" ) comparison )? ;
+comparison              -> term ( ( ">" | ">=" | "<" | "<=" ) term )? ;
 term                    -> factor ( ( "-" | "+" ) factor )* ;
 factor                  -> power ( ( "/" | "*" ) power )* ;
 power                   -> unary ( "^" unary )*
-unary                   -> "-" unary | primary ;
-primary                 -> value | call
+unary                   -> ("-")? primary ;
+primary                 -> quantity | call
                             | IDENTIFIER | ELEMENTPROPERTY
                             | "(" expression ")";
 call                    -> identifier "(" positionalArguments ")" ;

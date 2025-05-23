@@ -9,6 +9,9 @@
       "file-types": [
         "sunset"
       ],
+      "highlights": [
+        "queries/highlights.scm"
+      ],
       "injection-regex": "^sunset$",
       "class-name": "TreeSitterSunset"
     }
@@ -25,7 +28,7 @@
       }
     ],
     "links": {
-      "repository": "https://github.com/nick-boey/sunset-docs"
+      "repository": "https://github.com/sunset-lang/sunset-docs"
     }
   },
   "bindings": {
