@@ -51,11 +51,30 @@ module.exports = grammar({
     // keyValuePair: $ => seq(choice($.identifier))
 
     expression: ($) => $.term,
-    // logicOr
-    // logicAnd
-    // equality: $ => seq($.term, optional(seq(choice("==", "!="), $.term))),
-    // comparison: ($) =>
-    //  seq($.term, optional(seq(choice(">", ">=", "<", "<="), $.term))),
+    logicCombination: $ =>
+      seq(
+        field("left", $.expression),
+        choice($.and, $.or),
+        field("right", $.expression),
+      ),
+    equality: $ =>
+      prec.left(
+        5,
+        seq(
+          field("left", $.term),
+          choice($.equality, $.notEqual),
+          field("right", $.term)
+        ),
+      ),
+    comparison: ($) =>
+      prec.left(
+        4,
+        seq(
+          field("left", $.term),
+          choice($.lessThan, $.greaterThan, $.lessThanEqualTo, $.greaterThanEqualTo),
+          field("right", $.term)
+        )
+      ),
     term: ($) =>
       choice(
         prec.left(
@@ -97,7 +116,7 @@ module.exports = grammar({
         // $.elementProperty,
         seq("(", $.expression, ")"),
       ),
-    // call: $ => seq($.identifier, "(", $.positionalArguments, ")"),
+    call: $ => seq($.identifier, "(", $.positionalArguments, ")"),
 
     // Properties
     // namedArguments: $ => seq($.namedArgument, repeat(seq(",", $.namedArgument))),
@@ -148,6 +167,13 @@ module.exports = grammar({
     subtract: ($) => "-",
     multiply: ($) => "*",
     divide: ($) => "/",
+    lessThan: ($) => "<",
+    greaterThan: $ => ">",
+    lessThanEqualTo: $ => "<=",
+    greaterThanEqualTo: $ => ">=",
+    equalTo: $ => "==",
+    notEqualTo: $ => "!=",
+    not: $ => "!",
 
     // Lexical grammar
     // Latex
