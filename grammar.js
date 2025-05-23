@@ -16,7 +16,7 @@ module.exports = grammar({
   word: ($) => $.identifier,
 
   rules: {
-    source_file: ($) => repeat(choice($.expression, $.variableAssignment)),
+    source_file: ($) => repeat(choice($._expression, $.variableAssignment)),
 
     // Statements
     variableAssignment: ($) =>
@@ -24,7 +24,7 @@ module.exports = grammar({
         $.variableProperties,
         "=",
         choice(
-          $.expression,
+          $._expression,
           // $.ifExpression,
           // $.newElement
         ),
@@ -50,73 +50,47 @@ module.exports = grammar({
     // dictionaryExpression
     // keyValuePair: $ => seq(choice($.identifier))
 
-    expression: ($) => $.term,
-    logicCombination: $ =>
+    _expression: ($) => choice($._comparisonExpression, $._arithmeticExpression),
+
+    _comparisonExpression: $ => prec.left(
+      0,
       seq(
-        field("left", $.expression),
-        choice($.and, $.or),
-        field("right", $.expression),
-      ),
-    equality: $ =>
-      prec.left(
-        5,
-        seq(
-          field("left", $.term),
-          choice($.equality, $.notEqual),
-          field("right", $.term)
-        ),
-      ),
-    comparison: ($) =>
-      prec.left(
-        4,
-        seq(
-          field("left", $.term),
-          choice($.lessThan, $.greaterThan, $.lessThanEqualTo, $.greaterThanEqualTo),
-          field("right", $.term)
-        )
-      ),
-    term: ($) =>
-      choice(
-        prec.left(
-          3,
-          seq(
-            field("left", $.factor),
-            field("operator", choice($.add, $.subtract)),
-            field("right", $.factor),
-          ),
-        ),
-        $.factor,
-      ),
-    factor: ($) =>
-      choice(
-        prec.left(
-          2,
-          seq(
-            field("left", $.power),
-            field("operator", choice($.multiply, $.divide)),
-            field("right", $.power),
-          ),
-        ),
-        $.power,
-      ),
-    power: ($) =>
-      choice(
-        prec.left(
-          1,
-          seq(field("operand", $._unary), "^", field("exponent", $._unary)),
-        ),
-        $._unary,
-      ),
-    _unary: ($) => seq(optional("-"), $._primary),
-    _primary: ($) =>
-      choice(
-        $.quantity,
-        // $.call,
-        $.identifier,
-        // $.elementProperty,
-        seq("(", $.expression, ")"),
-      ),
-    call: $ => seq($.identifier, "(", $.positionalArguments, ")"),
+        field("left", $._expression),
+        choice($.lessThan, $.lessThanEqualTo, $.greaterThan, $.greaterThanEqualTo),
+        field("right", $._expression),
+      )
+    ),
+
+    _arithmeticExpression: $ => choice(
+      $.number,
+      $.identifier,
+      $.term,
+      $.factor,
+      $.power,
+      seq("(", $._arithmeticExpression, ")")
+    ),
+
+    power: $ => prec.left(
+      3,
+      seq(
+        field("left", $._expression),
+        field("operator", "^"),
+        field("right", $._expression)
+      )
+    ),
+    factor: $ => prec.left(
+      2, seq(
+        field("left", $._expression),
+        field("operator", choice($.multiply, $.divide)),
+        field("right", $._expression)
+      )),
+    term: $ => prec.left(
+      1, seq(
+        field("left", $._expression),
+        field("operator", choice($.add, $.subtract)),
+        field("right", $._expression)
+      )),
+    //call: $ => seq($.identifier, "(", $.positionalArguments, ")"),
 
     // Properties
     // namedArguments: $ => seq($.namedArgument, repeat(seq(",", $.namedArgument))),
@@ -163,10 +137,10 @@ module.exports = grammar({
     unitKeyword: ($) => choice("mm", "m", "km"),
 
     // Operators
-    add: ($) => "+",
-    subtract: ($) => "-",
-    multiply: ($) => "*",
-    divide: ($) => "/",
+    multiply: $ => "*",
+    divide: $ => "/",
+    add: $ => "+",
+    subtract: $ => "-",
     lessThan: ($) => "<",
     greaterThan: $ => ">",
     lessThanEqualTo: $ => "<=",

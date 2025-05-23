@@ -10,7 +10,7 @@
         "members": [
           {
             "type": "SYMBOL",
-            "name": "expression"
+            "name": "_expression"
           },
           {
             "type": "SYMBOL",
@@ -35,7 +35,7 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "expression"
+              "name": "_expression"
             }
           ]
         }
@@ -70,181 +70,87 @@
         }
       ]
     },
-    "expression": {
-      "type": "SYMBOL",
-      "name": "term"
-    },
-    "term": {
+    "_expression": {
       "type": "CHOICE",
       "members": [
         {
-          "type": "PREC_LEFT",
-          "value": 3,
-          "content": {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "FIELD",
-                "name": "left",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "factor"
-                }
-              },
-              {
-                "type": "FIELD",
-                "name": "operator",
-                "content": {
-                  "type": "CHOICE",
-                  "members": [
-                    {
-                      "type": "SYMBOL",
-                      "name": "add"
-                    },
-                    {
-                      "type": "SYMBOL",
-                      "name": "subtract"
-                    }
-                  ]
-                }
-              },
-              {
-                "type": "FIELD",
-                "name": "right",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "factor"
-                }
-              }
-            ]
-          }
+          "type": "SYMBOL",
+          "name": "_comparisonExpression"
         },
         {
           "type": "SYMBOL",
-          "name": "factor"
+          "name": "_arithmeticExpression"
         }
       ]
     },
-    "factor": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "PREC_LEFT",
-          "value": 2,
-          "content": {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "FIELD",
-                "name": "left",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "power"
-                }
-              },
-              {
-                "type": "FIELD",
-                "name": "operator",
-                "content": {
-                  "type": "CHOICE",
-                  "members": [
-                    {
-                      "type": "SYMBOL",
-                      "name": "multiply"
-                    },
-                    {
-                      "type": "SYMBOL",
-                      "name": "divide"
-                    }
-                  ]
-                }
-              },
-              {
-                "type": "FIELD",
-                "name": "right",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "power"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "SYMBOL",
-          "name": "power"
-        }
-      ]
-    },
-    "power": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "PREC_LEFT",
-          "value": 1,
-          "content": {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "FIELD",
-                "name": "operand",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "_unary"
-                }
-              },
-              {
-                "type": "STRING",
-                "value": "^"
-              },
-              {
-                "type": "FIELD",
-                "name": "exponent",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "_unary"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_unary"
-        }
-      ]
-    },
-    "_unary": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "-"
-            },
-            {
-              "type": "BLANK"
+    "_comparisonExpression": {
+      "type": "PREC_LEFT",
+      "value": 0,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "FIELD",
+            "name": "left",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_expression"
             }
-          ]
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_primary"
-        }
-      ]
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "lessThan"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "lessThanEqualTo"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "greaterThan"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "greaterThanEqualTo"
+              }
+            ]
+          },
+          {
+            "type": "FIELD",
+            "name": "right",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_expression"
+            }
+          }
+        ]
+      }
     },
-    "_primary": {
+    "_arithmeticExpression": {
       "type": "CHOICE",
       "members": [
         {
           "type": "SYMBOL",
-          "name": "quantity"
+          "name": "number"
         },
         {
           "type": "SYMBOL",
           "name": "identifier"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "term"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "factor"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "power"
         },
         {
           "type": "SEQ",
@@ -255,7 +161,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "expression"
+              "name": "_arithmeticExpression"
             },
             {
               "type": "STRING",
@@ -265,21 +171,122 @@
         }
       ]
     },
-    "add": {
-      "type": "STRING",
-      "value": "+"
+    "power": {
+      "type": "PREC_LEFT",
+      "value": 3,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "FIELD",
+            "name": "left",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_expression"
+            }
+          },
+          {
+            "type": "FIELD",
+            "name": "operator",
+            "content": {
+              "type": "STRING",
+              "value": "^"
+            }
+          },
+          {
+            "type": "FIELD",
+            "name": "right",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_expression"
+            }
+          }
+        ]
+      }
     },
-    "subtract": {
-      "type": "STRING",
-      "value": "-"
+    "factor": {
+      "type": "PREC_LEFT",
+      "value": 2,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "FIELD",
+            "name": "left",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_expression"
+            }
+          },
+          {
+            "type": "FIELD",
+            "name": "operator",
+            "content": {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "multiply"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "divide"
+                }
+              ]
+            }
+          },
+          {
+            "type": "FIELD",
+            "name": "right",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_expression"
+            }
+          }
+        ]
+      }
     },
-    "multiply": {
-      "type": "STRING",
-      "value": "*"
-    },
-    "divide": {
-      "type": "STRING",
-      "value": "/"
+    "term": {
+      "type": "PREC_LEFT",
+      "value": 1,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "FIELD",
+            "name": "left",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_expression"
+            }
+          },
+          {
+            "type": "FIELD",
+            "name": "operator",
+            "content": {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "add"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "subtract"
+                }
+              ]
+            }
+          },
+          {
+            "type": "FIELD",
+            "name": "right",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_expression"
+            }
+          }
+        ]
+      }
     },
     "quantity": {
       "type": "SEQ",
@@ -465,6 +472,50 @@
           "value": "km"
         }
       ]
+    },
+    "multiply": {
+      "type": "STRING",
+      "value": "*"
+    },
+    "divide": {
+      "type": "STRING",
+      "value": "/"
+    },
+    "add": {
+      "type": "STRING",
+      "value": "+"
+    },
+    "subtract": {
+      "type": "STRING",
+      "value": "-"
+    },
+    "lessThan": {
+      "type": "STRING",
+      "value": "<"
+    },
+    "greaterThan": {
+      "type": "STRING",
+      "value": ">"
+    },
+    "lessThanEqualTo": {
+      "type": "STRING",
+      "value": "<="
+    },
+    "greaterThanEqualTo": {
+      "type": "STRING",
+      "value": ">="
+    },
+    "equalTo": {
+      "type": "STRING",
+      "value": "=="
+    },
+    "notEqualTo": {
+      "type": "STRING",
+      "value": "!="
+    },
+    "not": {
+      "type": "STRING",
+      "value": "!"
     },
     "latexWord": {
       "type": "PATTERN",

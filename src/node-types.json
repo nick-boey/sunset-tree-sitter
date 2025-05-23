@@ -24,37 +24,62 @@
     }
   },
   {
-    "type": "expression",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "term",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "factor",
     "named": true,
     "fields": {
       "left": {
-        "multiple": false,
-        "required": false,
+        "multiple": true,
+        "required": true,
         "types": [
           {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "factor",
+            "named": true
+          },
+          {
+            "type": "greaterThan",
+            "named": true
+          },
+          {
+            "type": "greaterThanEqualTo",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lessThan",
+            "named": true
+          },
+          {
+            "type": "lessThanEqualTo",
+            "named": true
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
             "type": "power",
+            "named": true
+          },
+          {
+            "type": "term",
             "named": true
           }
         ]
       },
       "operator": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "divide",
@@ -67,25 +92,55 @@
         ]
       },
       "right": {
-        "multiple": false,
-        "required": false,
+        "multiple": true,
+        "required": true,
         "types": [
           {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "factor",
+            "named": true
+          },
+          {
+            "type": "greaterThan",
+            "named": true
+          },
+          {
+            "type": "greaterThanEqualTo",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lessThan",
+            "named": true
+          },
+          {
+            "type": "lessThanEqualTo",
+            "named": true
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
             "type": "power",
+            "named": true
+          },
+          {
+            "type": "term",
             "named": true
           }
         ]
       }
-    },
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "power",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -130,9 +185,9 @@
     "type": "power",
     "named": true,
     "fields": {
-      "exponent": {
+      "left": {
         "multiple": true,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "(",
@@ -143,11 +198,15 @@
             "named": false
           },
           {
-            "type": "-",
-            "named": false
+            "type": "factor",
+            "named": true
           },
           {
-            "type": "expression",
+            "type": "greaterThan",
+            "named": true
+          },
+          {
+            "type": "greaterThanEqualTo",
             "named": true
           },
           {
@@ -155,12 +214,95 @@
             "named": true
           },
           {
-            "type": "quantity",
+            "type": "lessThan",
+            "named": true
+          },
+          {
+            "type": "lessThanEqualTo",
+            "named": true
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "power",
+            "named": true
+          },
+          {
+            "type": "term",
             "named": true
           }
         ]
       },
-      "operand": {
+      "operator": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "^",
+            "named": false
+          }
+        ]
+      },
+      "right": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "factor",
+            "named": true
+          },
+          {
+            "type": "greaterThan",
+            "named": true
+          },
+          {
+            "type": "greaterThanEqualTo",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lessThan",
+            "named": true
+          },
+          {
+            "type": "lessThanEqualTo",
+            "named": true
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "power",
+            "named": true
+          },
+          {
+            "type": "term",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "source_file",
+    "named": true,
+    "root": true,
+    "fields": {
+      "left": {
         "multiple": true,
         "required": false,
         "types": [
@@ -173,11 +315,15 @@
             "named": false
           },
           {
-            "type": "-",
-            "named": false
+            "type": "factor",
+            "named": true
           },
           {
-            "type": "expression",
+            "type": "greaterThan",
+            "named": true
+          },
+          {
+            "type": "greaterThanEqualTo",
             "named": true
           },
           {
@@ -185,18 +331,92 @@
             "named": true
           },
           {
-            "type": "quantity",
+            "type": "lessThan",
+            "named": true
+          },
+          {
+            "type": "lessThanEqualTo",
+            "named": true
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "power",
+            "named": true
+          },
+          {
+            "type": "term",
+            "named": true
+          }
+        ]
+      },
+      "right": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "factor",
+            "named": true
+          },
+          {
+            "type": "greaterThan",
+            "named": true
+          },
+          {
+            "type": "greaterThanEqualTo",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lessThan",
+            "named": true
+          },
+          {
+            "type": "lessThanEqualTo",
+            "named": true
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "power",
+            "named": true
+          },
+          {
+            "type": "term",
             "named": true
           }
         ]
       }
     },
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": false,
       "types": [
         {
-          "type": "expression",
+          "type": "factor",
+          "named": true
+        },
+        {
+          "type": "greaterThan",
+          "named": true
+        },
+        {
+          "type": "greaterThanEqualTo",
           "named": true
         },
         {
@@ -204,42 +424,23 @@
           "named": true
         },
         {
-          "type": "quantity",
+          "type": "lessThan",
           "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "quantity",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
+        },
+        {
+          "type": "lessThanEqualTo",
+          "named": true
+        },
         {
           "type": "number",
           "named": true
         },
         {
-          "type": "unit",
+          "type": "power",
           "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "source_file",
-    "named": true,
-    "root": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
+        },
         {
-          "type": "expression",
+          "type": "term",
           "named": true
         },
         {
@@ -259,18 +460,58 @@
     "named": true,
     "fields": {
       "left": {
-        "multiple": false,
-        "required": false,
+        "multiple": true,
+        "required": true,
         "types": [
           {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
             "type": "factor",
+            "named": true
+          },
+          {
+            "type": "greaterThan",
+            "named": true
+          },
+          {
+            "type": "greaterThanEqualTo",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lessThan",
+            "named": true
+          },
+          {
+            "type": "lessThanEqualTo",
+            "named": true
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "power",
+            "named": true
+          },
+          {
+            "type": "term",
             "named": true
           }
         ]
       },
       "operator": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "add",
@@ -283,25 +524,55 @@
         ]
       },
       "right": {
-        "multiple": false,
-        "required": false,
+        "multiple": true,
+        "required": true,
         "types": [
           {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
             "type": "factor",
+            "named": true
+          },
+          {
+            "type": "greaterThan",
+            "named": true
+          },
+          {
+            "type": "greaterThanEqualTo",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lessThan",
+            "named": true
+          },
+          {
+            "type": "lessThanEqualTo",
+            "named": true
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "power",
+            "named": true
+          },
+          {
+            "type": "term",
             "named": true
           }
         ]
       }
-    },
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "factor",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -418,13 +689,146 @@
   {
     "type": "variableAssignment",
     "named": true,
-    "fields": {},
+    "fields": {
+      "left": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "factor",
+            "named": true
+          },
+          {
+            "type": "greaterThan",
+            "named": true
+          },
+          {
+            "type": "greaterThanEqualTo",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lessThan",
+            "named": true
+          },
+          {
+            "type": "lessThanEqualTo",
+            "named": true
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "power",
+            "named": true
+          },
+          {
+            "type": "term",
+            "named": true
+          }
+        ]
+      },
+      "right": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "factor",
+            "named": true
+          },
+          {
+            "type": "greaterThan",
+            "named": true
+          },
+          {
+            "type": "greaterThanEqualTo",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lessThan",
+            "named": true
+          },
+          {
+            "type": "lessThanEqualTo",
+            "named": true
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "power",
+            "named": true
+          },
+          {
+            "type": "term",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": true,
       "types": [
         {
-          "type": "expression",
+          "type": "factor",
+          "named": true
+        },
+        {
+          "type": "greaterThan",
+          "named": true
+        },
+        {
+          "type": "greaterThanEqualTo",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "lessThan",
+          "named": true
+        },
+        {
+          "type": "lessThanEqualTo",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "power",
+          "named": true
+        },
+        {
+          "type": "term",
           "named": true
         },
         {
@@ -506,6 +910,14 @@
     "named": false
   },
   {
+    "type": "greaterThan",
+    "named": true
+  },
+  {
+    "type": "greaterThanEqualTo",
+    "named": true
+  },
+  {
     "type": "identifier",
     "named": true
   },
@@ -516,6 +928,14 @@
   {
     "type": "km",
     "named": false
+  },
+  {
+    "type": "lessThan",
+    "named": true
+  },
+  {
+    "type": "lessThanEqualTo",
+    "named": true
   },
   {
     "type": "m",
