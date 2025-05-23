@@ -16,7 +16,11 @@ module.exports = grammar({
   word: ($) => $.identifier,
 
   rules: {
-    source_file: ($) => repeat(choice($._expression, $.variableAssignment)),
+    source_file: ($) => repeat(
+      choice(
+        $._expression,
+        $.variableAssignment)
+    ),
 
     // Statements
     variableAssignment: ($) =>
@@ -50,7 +54,7 @@ module.exports = grammar({
     // dictionaryExpression
     // keyValuePair: $ => seq(choice($.identifier))
 
-    _expression: ($) => choice($._comparisonExpression, $._arithmeticExpression),
+    _expression: ($) => choice($._arithmeticExpression),
 
     _comparisonExpression: $ => prec.left(
       0,
@@ -64,27 +68,31 @@ module.exports = grammar({
     _arithmeticExpression: $ => choice(
       $.number,
       $.identifier,
-      $.term,
-      $.factor,
-      $.power,
+      $.binaryOperation,
       seq("(", $._arithmeticExpression, ")")
     ),
 
-    power: $ => prec.left(
+    binaryOperation: $ => choice(
+      $._power,
+      $._factor,
+      $._term,
+    ),
+
+    _power: $ => prec.left(
       3,
       seq(
         field("left", $._expression),
-        field("operator", "^"),
+        field("operator", $.power),
         field("right", $._expression)
       )
     ),
-    factor: $ => prec.left(
+    _factor: $ => prec.left(
       2, seq(
         field("left", $._expression),
         field("operator", choice($.multiply, $.divide)),
         field("right", $._expression)
       )),
-    term: $ => prec.left(
+    _term: $ => prec.left(
       1, seq(
         field("left", $._expression),
         field("operator", choice($.add, $.subtract)),
@@ -102,32 +110,33 @@ module.exports = grammar({
 
     // Units and values
     quantity: ($) => seq($.number, optional($.unit)),
-    unit: ($) => seq("{", $.unitFactor, "}"),
-    unitFactor: ($) =>
-      choice(
-        prec.left(
-          2,
-          seq(
-            field("left", $.unitPower),
-            field("operator", token(choice("*", "/"))),
-            field("right", $.unitPower),
-          ),
-        ),
-        $.unitPower,
-      ),
-    unitPower: ($) =>
-      choice(
-        prec.left(
-          1,
-          seq(
-            field("operand", $.unitPrimary),
-            "^",
-            field("exponent", $.number),
-          ),
-        ),
-        $.unitPrimary,
-      ),
-    unitPrimary: ($) => choice(seq("(", $.unitFactor, ")"), $.unitKeyword),
+    unit: $ => seq(
+      "{", $._unitExpression, "}"
+    ),
+    _unitExpression: ($) => choice(
+      $.unitKeyword,
+      $.unitBinaryOperation,
+      seq("(", $._unitExpression, ")")
+    ),
+    unitBinaryOperation: $ => choice(
+      $._unitPower,
+      $._unitFactor,
+    ),
+    _unitPower: $ => prec.left(
+      3,
+      seq(
+        field("left", $._unitExpression),
+        field("operator", $.power),
+        field("right", $.integer)
+      )
+    ),
+    _unitFactor: $ => prec.left(
+      2, seq(
+        field("left", $._unitExpression),
+        field("operator", choice($.multiply, $.divide)),
+        field("right", $._unitExpression)
+      )
+    ),
 
     // Keywords
     if: ($) => "if",
@@ -141,6 +150,7 @@ module.exports = grammar({
     divide: $ => "/",
     add: $ => "+",
     subtract: $ => "-",
+    power: $ => "^",
     lessThan: ($) => "<",
     greaterThan: $ => ">",
     lessThanEqualTo: $ => "<=",

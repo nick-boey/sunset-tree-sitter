@@ -75,10 +75,6 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "_comparisonExpression"
-        },
-        {
-          "type": "SYMBOL",
           "name": "_arithmeticExpression"
         }
       ]
@@ -142,15 +138,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "term"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "factor"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "power"
+          "name": "binaryOperation"
         },
         {
           "type": "SEQ",
@@ -171,7 +159,24 @@
         }
       ]
     },
-    "power": {
+    "binaryOperation": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_power"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_factor"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_term"
+        }
+      ]
+    },
+    "_power": {
       "type": "PREC_LEFT",
       "value": 3,
       "content": {
@@ -189,8 +194,8 @@
             "type": "FIELD",
             "name": "operator",
             "content": {
-              "type": "STRING",
-              "value": "^"
+              "type": "SYMBOL",
+              "name": "power"
             }
           },
           {
@@ -204,7 +209,7 @@
         ]
       }
     },
-    "factor": {
+    "_factor": {
       "type": "PREC_LEFT",
       "value": 2,
       "content": {
@@ -246,7 +251,7 @@
         ]
       }
     },
-    "term": {
+    "_term": {
       "type": "PREC_LEFT",
       "value": 1,
       "content": {
@@ -318,7 +323,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "unitFactor"
+          "name": "_unitExpression"
         },
         {
           "type": "STRING",
@@ -326,101 +331,17 @@
         }
       ]
     },
-    "unitFactor": {
+    "_unitExpression": {
       "type": "CHOICE",
       "members": [
         {
-          "type": "PREC_LEFT",
-          "value": 2,
-          "content": {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "FIELD",
-                "name": "left",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "unitPower"
-                }
-              },
-              {
-                "type": "FIELD",
-                "name": "operator",
-                "content": {
-                  "type": "TOKEN",
-                  "content": {
-                    "type": "CHOICE",
-                    "members": [
-                      {
-                        "type": "STRING",
-                        "value": "*"
-                      },
-                      {
-                        "type": "STRING",
-                        "value": "/"
-                      }
-                    ]
-                  }
-                }
-              },
-              {
-                "type": "FIELD",
-                "name": "right",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "unitPower"
-                }
-              }
-            ]
-          }
+          "type": "SYMBOL",
+          "name": "unitKeyword"
         },
         {
           "type": "SYMBOL",
-          "name": "unitPower"
-        }
-      ]
-    },
-    "unitPower": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "PREC_LEFT",
-          "value": 1,
-          "content": {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "FIELD",
-                "name": "operand",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "unitPrimary"
-                }
-              },
-              {
-                "type": "STRING",
-                "value": "^"
-              },
-              {
-                "type": "FIELD",
-                "name": "exponent",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "number"
-                }
-              }
-            ]
-          }
+          "name": "unitBinaryOperation"
         },
-        {
-          "type": "SYMBOL",
-          "name": "unitPrimary"
-        }
-      ]
-    },
-    "unitPrimary": {
-      "type": "CHOICE",
-      "members": [
         {
           "type": "SEQ",
           "members": [
@@ -430,19 +351,103 @@
             },
             {
               "type": "SYMBOL",
-              "name": "unitFactor"
+              "name": "_unitExpression"
             },
             {
               "type": "STRING",
               "value": ")"
             }
           ]
+        }
+      ]
+    },
+    "unitBinaryOperation": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_unitPower"
         },
         {
           "type": "SYMBOL",
-          "name": "unitKeyword"
+          "name": "_unitFactor"
         }
       ]
+    },
+    "_unitPower": {
+      "type": "PREC_LEFT",
+      "value": 3,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "FIELD",
+            "name": "left",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_unitExpression"
+            }
+          },
+          {
+            "type": "FIELD",
+            "name": "operator",
+            "content": {
+              "type": "SYMBOL",
+              "name": "power"
+            }
+          },
+          {
+            "type": "FIELD",
+            "name": "right",
+            "content": {
+              "type": "SYMBOL",
+              "name": "integer"
+            }
+          }
+        ]
+      }
+    },
+    "_unitFactor": {
+      "type": "PREC_LEFT",
+      "value": 2,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "FIELD",
+            "name": "left",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_unitExpression"
+            }
+          },
+          {
+            "type": "FIELD",
+            "name": "operator",
+            "content": {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "multiply"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "divide"
+                }
+              ]
+            }
+          },
+          {
+            "type": "FIELD",
+            "name": "right",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_unitExpression"
+            }
+          }
+        ]
+      }
     },
     "if": {
       "type": "STRING",
@@ -488,6 +493,10 @@
     "subtract": {
       "type": "STRING",
       "value": "-"
+    },
+    "power": {
+      "type": "STRING",
+      "value": "^"
     },
     "lessThan": {
       "type": "STRING",
