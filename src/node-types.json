@@ -25,11 +25,15 @@
             "named": true
           },
           {
-            "type": "identifier",
+            "type": "call",
             "named": true
           },
           {
             "type": "quantity",
+            "named": true
+          },
+          {
+            "type": "variable",
             "named": true
           }
         ]
@@ -77,15 +81,49 @@
             "named": true
           },
           {
-            "type": "identifier",
+            "type": "call",
             "named": true
           },
           {
             "type": "quantity",
             "named": true
+          },
+          {
+            "type": "variable",
+            "named": true
           }
         ]
       }
+    }
+  },
+  {
+    "type": "call",
+    "named": true,
+    "fields": {
+      "arguments": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "namedArguments",
+            "named": true
+          },
+          {
+            "type": "positionalArguments",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "variable",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -123,6 +161,36 @@
     }
   },
   {
+    "type": "namedArguments",
+    "named": true,
+    "fields": {
+      "property": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      },
+      "propertyValue": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "quantity",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "number",
     "named": true,
     "fields": {},
@@ -146,6 +214,51 @@
     }
   },
   {
+    "type": "positionalArguments",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "quantity",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "quantity",
+    "named": true,
+    "fields": {
+      "unit": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "unit",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "number",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "source_file",
     "named": true,
     "root": true,
@@ -159,11 +272,15 @@
           "named": true
         },
         {
-          "type": "identifier",
+          "type": "call",
           "named": true
         },
         {
           "type": "quantity",
+          "named": true
+        },
+        {
+          "type": "variable",
           "named": true
         },
         {
@@ -275,6 +392,25 @@
     "fields": {}
   },
   {
+    "type": "variable",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "variable",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "variableAssignment",
     "named": true,
     "fields": {},
@@ -287,7 +423,7 @@
           "named": true
         },
         {
-          "type": "identifier",
+          "type": "call",
           "named": true
         },
         {
@@ -295,14 +431,18 @@
           "named": true
         },
         {
-          "type": "variableProperties",
+          "type": "variable",
+          "named": true
+        },
+        {
+          "type": "variableDefinition",
           "named": true
         }
       ]
     }
   },
   {
-    "type": "variableProperties",
+    "type": "variableDefinition",
     "named": true,
     "fields": {
       "unit": {
@@ -340,11 +480,19 @@
     "named": false
   },
   {
+    "type": ",",
+    "named": false
+  },
+  {
     "type": "-",
     "named": false
   },
   {
     "type": ".",
+    "named": false
+  },
+  {
+    "type": ":",
     "named": false
   },
   {
