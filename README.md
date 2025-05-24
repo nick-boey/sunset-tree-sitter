@@ -24,7 +24,7 @@ The grammar is contained in the `grammar.js` file - edit it and re-run `tree-sit
 
 ### Testing
 
-Automated testing has been set up in the ./tree-sitter/tests/corpus/ folder. These may be run using the following command:
+Automated testing has been set up in the `./tree-sitter/tests/corpus/` folder. These may be run using the following command:
 
 ```bash
 tree-sitter test
@@ -41,7 +41,6 @@ To install this grammar in Neovim and enable syntax higlighting, you will need t
 1. Add this parser to the [`nvim-treesitter` plugin configuration](https://github.com/nvim-treesitter/nvim-treesitter?tab=readme-ov-file#adding-parsers).
 This will allow nvim-treesitter to find the repository, download and compile the file.
 You will also need to create a new file type for the Sunset language to associate the `.sunset` file extension.
-
 This requires the following to be added to you `init.lua` configuration file:
 
 ```lua
