@@ -25,7 +25,7 @@ module.exports = grammar({
     // Statements
     variableAssignment: ($) =>
       seq(
-        $.variableProperties,
+        $.variableDefinition,
         "=",
         choice(
           $._expression,
@@ -35,7 +35,7 @@ module.exports = grammar({
         // TODO: Add shorthand description and reference
       ),
     // inputAssignment
-    variableProperties: ($) =>
+    variableDefinition: ($) =>
       seq(
         field("variableName", $.identifier),
         // Add multisymbol shorthand and identifier symbol shorthand
@@ -67,8 +67,8 @@ module.exports = grammar({
 
     _arithmeticExpression: $ => choice(
       $.number,
-      $.identifier,
       $.call,
+      $.variable,
       $.binaryOperation,
       seq("(", $._arithmeticExpression, ")")
     ),
@@ -103,9 +103,9 @@ module.exports = grammar({
     ),
 
     // Element properties
-    call: $ => prec.left(5,
+    call: $ => prec.left(10,
       seq(
-        $.elementProperty,
+        $.variable,
         "(",
         optional(
           field("arguments", choice($.positionalArguments, $.namedArguments))
@@ -120,9 +120,10 @@ module.exports = grammar({
       field("propertyValue", $._argument),
     ),
     _argument: $ => choice($.quantity, $.identifier),
-    elementProperty: $ => seq(
+    variable: $ => choice(
       $.identifier,
-      repeat(seq(".", $.identifier)
+      prec.left(10,
+        seq($.variable, ".", $.identifier)
       )
     ),
 

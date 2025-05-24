@@ -24,7 +24,7 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "variableProperties"
+          "name": "variableDefinition"
         },
         {
           "type": "STRING",
@@ -41,7 +41,7 @@
         }
       ]
     },
-    "variableProperties": {
+    "variableDefinition": {
       "type": "SEQ",
       "members": [
         {
@@ -134,11 +134,11 @@
         },
         {
           "type": "SYMBOL",
-          "name": "identifier"
+          "name": "call"
         },
         {
           "type": "SYMBOL",
-          "name": "call"
+          "name": "variable"
         },
         {
           "type": "SYMBOL",
@@ -299,13 +299,13 @@
     },
     "call": {
       "type": "PREC_LEFT",
-      "value": 5,
+      "value": 10,
       "content": {
         "type": "SEQ",
         "members": [
           {
             "type": "SYMBOL",
-            "name": "elementProperty"
+            "name": "variable"
           },
           {
             "type": "STRING",
@@ -431,18 +431,23 @@
         }
       ]
     },
-    "elementProperty": {
-      "type": "SEQ",
+    "variable": {
+      "type": "CHOICE",
       "members": [
         {
           "type": "SYMBOL",
           "name": "identifier"
         },
         {
-          "type": "REPEAT",
+          "type": "PREC_LEFT",
+          "value": 10,
           "content": {
             "type": "SEQ",
             "members": [
+              {
+                "type": "SYMBOL",
+                "name": "variable"
+              },
               {
                 "type": "STRING",
                 "value": "."
