@@ -5,3 +5,6 @@
 (unit) @keyword
 (identifier) @function
 (number) @constant
+
+; TODO: Add comma to punctuation
+["."] @punctuation

@@ -68,6 +68,7 @@ module.exports = grammar({
     _arithmeticExpression: $ => choice(
       $.number,
       $.identifier,
+      $.call,
       $.binaryOperation,
       seq("(", $._arithmeticExpression, ")")
     ),
@@ -91,25 +92,46 @@ module.exports = grammar({
         field("left", $._expression),
         field("operator", choice($.multiply, $.divide)),
         field("right", $._expression)
-      )),
+      )
+    ),
     _term: $ => prec.left(
       1, seq(
         field("left", $._expression),
         field("operator", choice($.add, $.subtract)),
         field("right", $._expression)
-      )),
-    //call: $ => seq($.identifier, "(", $.positionalArguments, ")"),
+      )
+    ),
 
-    // Properties
-    // namedArguments: $ => seq($.namedArgument, repeat(seq(",", $.namedArgument))),
-    // positionalArguments: $ => seq($.argument, repeat(seq(",", $.argument))),
-    // namedArgument: $ => seq($.identifier, ":", $.argument),
-    // argument: $ => choice($.quantity, $.identifier),
-    // newElement: $ => seq($.identifier, optional(seq("(", choice($.positionalArguments, $.namedArguments), ")"))),
-    // elementProperty: $ => seq($.identifier, repeat(seq(".", $.identifier))),
+    // Element properties
+    call: $ => prec.left(5,
+      seq(
+        $.elementProperty,
+        "(",
+        optional(
+          field("arguments", choice($.positionalArguments, $.namedArguments))
+        ),
+        ")")
+    ),
+    namedArguments: $ => seq($._namedArgument, repeat(seq(",", $._namedArgument))),
+    positionalArguments: $ => seq($._argument, repeat(seq(",", $._argument))),
+    _namedArgument: $ => seq(
+      field("property", $.identifier),
+      ":",
+      field("propertyValue", $._argument),
+    ),
+    _argument: $ => choice($.quantity, $.identifier),
+    elementProperty: $ => seq(
+      $.identifier,
+      repeat(seq(".", $.identifier)
+      )
+    ),
 
     // Units and values
-    quantity: ($) => seq($.number, optional($.unit)),
+    quantity: ($) => seq(
+      field("value", $.number),
+      field("unit", optional($.unit)
+      )
+    ),
     unit: $ => seq(
       "{", $._unitExpression, "}"
     ),
