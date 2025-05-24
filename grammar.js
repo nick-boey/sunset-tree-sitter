@@ -71,7 +71,6 @@ module.exports = grammar({
     ),
 
     _arithmeticExpression: $ => choice(
-      $.number,
       $.quantity,
       $.call,
       $.variable,
