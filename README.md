@@ -31,3 +31,39 @@ tree-sitter test
 ```
 
 For more information on writing tests, see the [Tree-sitter documentation](https://tree-sitter.github.io/tree-sitter/creating-parsers/5-writing-tests.html).
+
+## Installation instructions
+
+### Neovim (`nvim-treesitter`)
+
+To install this grammar in Neovim and enable syntax higlighting, you will need to:
+
+1. Add this parser to the [`nvim-treesitter` plugin configuration](https://github.com/nvim-treesitter/nvim-treesitter?tab=readme-ov-file#adding-parsers).
+This will allow nvim-treesitter to find the repository, download and compile the file.
+You will also need to create a new file type for the Sunset language to associate the `.sunset` file extension.
+
+This requires the following to be added to you `init.lua` configuration file:
+
+```lua
+-- Associate the .sunset file extension with the file type
+vim.filetype.add({
+  extension = {
+    sunset = "sunset",
+  },
+})
+
+-- Configure nvim-treesitter
+local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+parser_config.sunset = {
+  install_info = {
+    url = "https://github.com/sunset-lang/tree-sitter-sunset",
+    branch = "main",
+  },
+}
+```
+
+2. Add the highlighting query (`queries\highlights.scm`) to the `nvim-treesitter` queries folder, which is in the Neovim runtime folder.
+This is because `nvim-treesitter` [does not copy the queries by default](https://github.com/nvim-treesitter/nvim-treesitter?tab=readme-ov-file#adding-queries).
+On LazyVim installed on Windows, this folder is located by default at `%APPDATA%\Local\nvim-data\lazy\nvim-treesitter\queries\sunset\`. You may need to create the `sunset` folder.
+
+3. Check that the highlighting feature is installed with `:checkhealth`. Under `nvim-treesitter`, you should now see the `sunset` language with a tick next to the highlighting feature.
