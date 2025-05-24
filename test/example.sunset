@@ -1,2 +1,7 @@
 // Comment here
+<<<<<<< Updated upstream
 x {mm * m^2} = 45 * 12 - 15 ^ (14 + 18) + y
+=======
+x {mm * m^2} = 45 {mm} * 12 - 15 ^ (14 + 18) + y
+y = abc.efg
+>>>>>>> Stashed changes

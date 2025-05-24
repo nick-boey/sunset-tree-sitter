@@ -29,7 +29,7 @@
             "named": true
           },
           {
-            "type": "number",
+            "type": "quantity",
             "named": true
           }
         ]
@@ -81,7 +81,7 @@
             "named": true
           },
           {
-            "type": "number",
+            "type": "quantity",
             "named": true
           }
         ]
@@ -163,7 +163,7 @@
           "named": true
         },
         {
-          "type": "number",
+          "type": "quantity",
           "named": true
         },
         {
@@ -291,7 +291,7 @@
           "named": true
         },
         {
-          "type": "number",
+          "type": "quantity",
           "named": true
         },
         {

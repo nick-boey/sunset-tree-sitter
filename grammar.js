@@ -7,6 +7,11 @@
 /// <reference types="tree-sitter-cli/dsl" />
 // @ts-check
 
+// Roadmap:
+// - Boolean expressions
+// - Collections
+// - Element definitions
+
 module.exports = grammar({
   name: "sunset",
 
@@ -66,8 +71,14 @@ module.exports = grammar({
     ),
 
     _arithmeticExpression: $ => choice(
+<<<<<<< Updated upstream
       $.number,
       $.identifier,
+=======
+      $.quantity,
+      $.call,
+      $.variable,
+>>>>>>> Stashed changes
       $.binaryOperation,
       seq("(", $._arithmeticExpression, ")")
     ),

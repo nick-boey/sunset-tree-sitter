@@ -130,7 +130,7 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "number"
+          "name": "quantity"
         },
         {
           "type": "SYMBOL",
